@@ -1,6 +1,6 @@
 # PHP Helpers: Array Functions
 
--   Version: v1.0.0
+-   Version: v1.0.1
 -   Date: May 11 2019
 -   [Release notes](https://github.com/pointybeard/helpers-functions-arrays/blob/master/CHANGELOG.md)
 -   [GitHub repository](https://github.com/pointybeard/helpers-functions-arrays)
@@ -28,8 +28,9 @@ This library is a collection of helpful functions related to arrays and array ma
 
 The following functions are provided:
 
--   `array_is_assoc(array $input)`
--   `array_remove_empty(array $input, int $depth=null)`
+-   `array_is_assoc(array $input) : bool`
+-   `array_remove_empty(array $input, int $depth=null) : ?array`
+-   `array_insert_at_index(array &$array, int $index, mixed ...$additions) : void`
 
 Example usage:
 
@@ -45,6 +46,36 @@ var_dump(Arrays\array_is_assoc(['a' => 1, 'b' => 2]));
 
 var_dump(Arrays\array_is_assoc([4, 5, 6, 7]));
 // bool(false)
+
+$a = [1, 2, 3, 4];
+Arrays\array_insert_at_index($a, 2, "apple", "banana", "orange");
+print_r($a);
+// Array
+// (
+//     [0] => 1
+//     [1] => 2
+//     [2] => apple
+//     [3] => banana
+//     [4] => orange
+//     [5] => 3
+//     [6] => 4
+// )
+
+$a = [1, 3, 'animal' => 'chicken', 1, 2, 3, 4];
+Arrays\array_insert_at_index($a, 4, ['food' => 'cabbage']);
+print_r($a);
+// Note that array key 'food' is not preserved
+// Array
+// (
+//     [0] => 1
+//     [1] => 3
+//     [animal] => chicken
+//     [2] => 1
+//     [3] => cabbage
+//     [4] => 2
+//     [5] => 3
+//     [6] => 4
+// )
 
 print_r(Arrays\array_remove_empty([
     1, 2, 3, 4, '', ['a', 'b', 'c', '', 'e']
@@ -124,6 +155,11 @@ print_r(Arrays\array_remove_empty([
 //         )
 //     )
 // )
+
+var_dump(Arrays\array_remove_empty([
+    "", NULL, false
+]));
+// array(0) {}
 
 try {
     print_r(Arrays\array_remove_empty([

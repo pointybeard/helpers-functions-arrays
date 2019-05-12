@@ -31,3 +31,18 @@ if (!function_exists(__NAMESPACE__ . '\array_remove_empty')) {
         return $input;
     }
 }
+
+if (!function_exists(__NAMESPACE__ . '\array_insert_at_index')) {
+    function array_insert_at_index(&$array, $index, ...$additions) {
+
+        if (!is_numeric($index)) {
+            throw new Exceptions\GenericArrayFunctionsException("index must be an integer");
+        }
+
+        foreach($additions as $a) {
+            array_splice($array, $index, 0, $a);
+            // Advance the index so each additon is inserted after the previous one
+            $index++;
+        }
+    }
+}
